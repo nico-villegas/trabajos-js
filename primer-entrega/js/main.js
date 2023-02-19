@@ -1,4 +1,9 @@
-
+/*  
+    Alumno: Nicolás Villegas
+    
+    El programa se basa en mediante un menu, elegir y comprobar si un numero ingrasado por el usuario
+    es par o impar ó si el numero es primo
+*/
 
 if(login()){
     menu()
