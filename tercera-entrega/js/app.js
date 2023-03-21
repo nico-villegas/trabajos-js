@@ -27,7 +27,7 @@ class ProductController {
                     <p class="card-text">
                         ${producto.precio}
                     </p>
-                    <a href="#" class="btn btn-primary" id="mate_Nro_${producto.id}">Añadir al carrito</a>
+                    <button class="btn btn-primary" id="mate_Nro_${producto.id}">Añadir al carrito</button>
                 </div>
             </div>
             `
@@ -35,30 +35,30 @@ class ProductController {
     }
 }
 
-class CarritoController{
-    constructor(){
+class CarritoController {
+    constructor() {
         this.listaCarrito = []
     }
 
-    levantar(){
+    levantar() {
         let obtenerListaJSON = localStorage.getItem("listaCarrito")
 
-        if(obtenerListaJSON){
+        if (obtenerListaJSON) {
             this.listaCarrito = JSON.parse(obtenerListaJSON)
         }
     }
 
-    anadir(producto){
-        this.listaCarrito.push(producto)
-        let arrFormatoJSON = JSON.stringify(this.listaCarrito)
-        localStorage.setItem("listaCarrito",arrFormatoJSON)
+    anadir(producto) {
+                this.listaCarrito.push(producto)
+                let arrFormatoJSON = JSON.stringify(this.listaCarrito)
+                localStorage.setItem("listaCarrito", arrFormatoJSON)
     }
 
-    mostrarEnDOM(contenedor_carrito){
+    mostrarEnDOM(contenedor_carrito) {
         //limpio el contenedor
         contenedor_carrito.innerHTML = ""
         //muestro todo
-        this.listaCarrito.forEach( producto => {
+        this.listaCarrito.forEach(producto => {
             contenedor_carrito.innerHTML += `
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0">
@@ -70,6 +70,8 @@ class CarritoController{
                             <h5 class="card-title">${producto.nombre}</h5>
                             <p class="card-text">${producto.descripcion}</p>
                             <p class="card-text">$${producto.precio}</p>
+                            <p class"card-text">Cantidad: ${producto.cantidad}</p>
+                            <button type="button" class="btn btn-danger" id="eliminar_producto_${producto.id}">Eliminar producto</button>
                         </div>
                     </div>
                 </div>
@@ -78,7 +80,20 @@ class CarritoController{
         })
     }
 
-    limpiarCarrito(){
+    eliminarProductos() {
+
+        this.listaCarrito.forEach(productoId => {
+
+            this.listaCarrito.splice(productoId.id - 1, 1)
+            const arrFormatoJSON = JSON.stringify(this.listaCarrito)
+            localStorage.setItem("listaCarrito", arrFormatoJSON)
+            this.mostrarEnDOM(contenedor_carrito)
+
+        });
+
+    }
+
+    limpiarCarrito() {
         this.listaCarrito = []
         localStorage.removeItem("listaCarrito")
         this.mostrarEnDOM(contenedor_carrito)
@@ -102,18 +117,34 @@ controladorProductos.mostrarEnDOM(contenedor_productos)
 controladorCarrito.mostrarEnDOM(contenedor_carrito)
 
 //Añadimos Eventos a los botones de cada CARD
-controladorProductos.listaProductos.forEach( producto => {
-    const agregarAlCarrito = document.getElementById(`mate_Nro_${producto.id}`)
+controladorProductos.listaProductos.forEach(e => {
+    const agregarAlCarrito = document.getElementById(`mate_Nro_${e.id}`)
 
-    agregarAlCarrito.addEventListener("click",()=>{
-        
-        controladorCarrito.anadir(producto)
+    agregarAlCarrito.addEventListener("click", () => {
+
+        controladorCarrito.anadir(e)
         controladorCarrito.levantar()
         controladorCarrito.mostrarEnDOM(contenedor_carrito)
     })
 })
 
 const finalizarCompra = document.getElementById("finalizar_compra")
-finalizarCompra.addEventListener("click", () =>{
+finalizarCompra.addEventListener("click", () => {
     controladorCarrito.limpiarCarrito()
 })
+
+controladorCarrito.listaCarrito.forEach(e => {
+    const eliminarProducto = document.getElementById(`eliminar_producto_${e.id}`)
+
+
+    eliminarProducto.addEventListener("click", () => {
+
+        controladorCarrito.eliminarProductos()
+    })
+})
+
+
+
+
+
+
