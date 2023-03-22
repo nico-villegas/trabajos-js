@@ -80,11 +80,26 @@ class CarritoController {
         })
     }
 
-    eliminarProductos() {
+    /* eliminarProductos() {
 
         this.listaCarrito.forEach(productoId => {
 
             this.listaCarrito.splice(productoId.id - 1, 1)
+            const arrFormatoJSON = JSON.stringify(this.listaCarrito)
+            localStorage.setItem("listaCarrito", arrFormatoJSON)
+            this.mostrarEnDOM(contenedor_carrito)
+
+        });
+
+    } */
+
+    eliminarProductos() {
+
+        this.listaCarrito.forEach(productoId => {
+            console.log(productoId);
+            const index = this.listaCarrito.findIndex(p=> p.id === productoId.id);
+            console.log(index)
+            this.listaCarrito.splice(index, 1)
             const arrFormatoJSON = JSON.stringify(this.listaCarrito)
             localStorage.setItem("listaCarrito", arrFormatoJSON)
             this.mostrarEnDOM(contenedor_carrito)
@@ -140,9 +155,9 @@ controladorCarrito.listaCarrito.forEach(e => {
     eliminarProducto.addEventListener("click", () => {
 
         controladorCarrito.eliminarProductos()
-    })
-})
 
+    })
+}) 
 
 
 
