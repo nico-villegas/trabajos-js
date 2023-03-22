@@ -49,9 +49,11 @@ class CarritoController {
     }
 
     anadir(producto) {
-                this.listaCarrito.push(producto)
-                let arrFormatoJSON = JSON.stringify(this.listaCarrito)
-                localStorage.setItem("listaCarrito", arrFormatoJSON)
+        
+        this.listaCarrito.push(producto)
+        let arrFormatoJSON = JSON.stringify(this.listaCarrito)
+        localStorage.setItem("listaCarrito", arrFormatoJSON)
+
     }
 
     mostrarEnDOM(contenedor_carrito) {
@@ -71,7 +73,7 @@ class CarritoController {
                             <p class="card-text">${producto.descripcion}</p>
                             <p class="card-text">$${producto.precio}</p>
                             <p class"card-text">Cantidad: ${producto.cantidad}</p>
-                            <button type="button" class="btn btn-danger" id="eliminar_producto_${producto.id}">Eliminar producto</button>
+                            <button onClick = "eliminarDelCarrito(${producto.id})" class="btn btn-danger"> Eliminar del Carrito </button>
                         </div>
                     </div>
                 </div>
@@ -79,34 +81,7 @@ class CarritoController {
             `
         })
     }
-
-    /* eliminarProductos() {
-
-        this.listaCarrito.forEach(productoId => {
-
-            this.listaCarrito.splice(productoId.id - 1, 1)
-            const arrFormatoJSON = JSON.stringify(this.listaCarrito)
-            localStorage.setItem("listaCarrito", arrFormatoJSON)
-            this.mostrarEnDOM(contenedor_carrito)
-
-        });
-
-    } */
-
-    eliminarProductos() {
-
-        this.listaCarrito.forEach(productoId => {
-            console.log(productoId);
-            const index = this.listaCarrito.findIndex(p=> p.id === productoId.id);
-            console.log(index)
-            this.listaCarrito.splice(index, 1)
-            const arrFormatoJSON = JSON.stringify(this.listaCarrito)
-            localStorage.setItem("listaCarrito", arrFormatoJSON)
-            this.mostrarEnDOM(contenedor_carrito)
-
-        });
-
-    }
+    
 
     limpiarCarrito() {
         this.listaCarrito = []
@@ -143,21 +118,21 @@ controladorProductos.listaProductos.forEach(e => {
     })
 })
 
+
+// Funcionalidades del carrito
 const finalizarCompra = document.getElementById("finalizar_compra")
 finalizarCompra.addEventListener("click", () => {
     controladorCarrito.limpiarCarrito()
 })
 
-controladorCarrito.listaCarrito.forEach(e => {
-    const eliminarProducto = document.getElementById(`eliminar_producto_${e.id}`)
+const eliminarDelCarrito = (id) => {
+    const producto = controladorCarrito.listaCarrito.find((producto) => producto.id === id)
+    controladorCarrito.listaCarrito.splice(controladorCarrito.listaCarrito.indexOf(producto), 1)
+    controladorCarrito.mostrarEnDOM(contenedor_carrito)
+    let arrFormatoJSON = JSON.stringify(controladorCarrito.listaCarrito)
+    localStorage.setItem("listaCarrito", arrFormatoJSON)
+};
 
-
-    eliminarProducto.addEventListener("click", () => {
-
-        controladorCarrito.eliminarProductos()
-
-    })
-}) 
 
 
 
