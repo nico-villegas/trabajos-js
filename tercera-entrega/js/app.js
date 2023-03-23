@@ -17,15 +17,15 @@ class ProductController {
         //muestro toda la lista
         this.listaProductos.forEach(producto => {
             contenedor_productos.innerHTML += `
-            <div class="card" style="width: 18rem;">
+            <div class="card" style="width: 18rem;" id="card-main">
                 <img src="${producto.img}" class="card-img-top" alt="${producto.alt}">
                 <div class="card-body">
                     <h5 class="card-title">${producto.nombre}</h5>
                     <p class="card-text">
                         ${producto.descripcion}
                     </p>
-                    <p class="card-text">
-                        ${producto.precio}
+                    <p class="card-text" id="precio">
+                        $${producto.precio}
                     </p>
                     <button class="btn btn-primary" id="mate_Nro_${producto.id}">Añadir al carrito</button>
                 </div>
@@ -49,11 +49,23 @@ class CarritoController {
     }
 
     anadir(producto) {
-        
-        this.listaCarrito.push(producto)
-        let arrFormatoJSON = JSON.stringify(this.listaCarrito)
-        localStorage.setItem("listaCarrito", arrFormatoJSON)
+        const enCarrito = this.listaCarrito.find((el) => el.id === producto.id)
 
+        if (enCarrito) {
+            enCarrito.cantidad++
+            let arrFormatoJSON = JSON.stringify(this.listaCarrito)
+            localStorage.setItem("listaCarrito", arrFormatoJSON)
+        } else {
+
+            this.listaCarrito.push(producto)
+            let arrFormatoJSON = JSON.stringify(this.listaCarrito)
+            localStorage.setItem("listaCarrito", arrFormatoJSON)
+        }
+        this.mostrarEnDOM(contenedor_carrito)
+
+        this.totalProductos()
+
+        
     }
 
     mostrarEnDOM(contenedor_carrito) {
@@ -62,7 +74,7 @@ class CarritoController {
         //muestro todo
         this.listaCarrito.forEach(producto => {
             contenedor_carrito.innerHTML += `
-            <div class="card mb-3" style="max-width: 540px;">
+            <div class="card mb-3" style="max-width: 540px;" id="card-modal">
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img src="${producto.img}" class="img-fluid rounded-start" alt="${producto.alt}">
@@ -81,12 +93,21 @@ class CarritoController {
             `
         })
     }
-    
+
 
     limpiarCarrito() {
         this.listaCarrito = []
         localStorage.removeItem("listaCarrito")
         this.mostrarEnDOM(contenedor_carrito)
+    }
+
+    totalProductos(){
+        const totalProductos = document.getElementById('total-productos')
+        let total = 0
+        this.listaCarrito.forEach((producto) => {
+            total += producto.precio * producto.cantidad
+        })
+        totalProductos.innerHTML = total
     }
 }
 
@@ -132,6 +153,8 @@ const eliminarDelCarrito = (id) => {
     let arrFormatoJSON = JSON.stringify(controladorCarrito.listaCarrito)
     localStorage.setItem("listaCarrito", arrFormatoJSON)
 };
+
+
 
 
 

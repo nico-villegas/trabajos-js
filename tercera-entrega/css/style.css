@@ -1,3 +1,65 @@
+
+
+header .navbar .container-fluid a img {
+    width: 200px;
+    height: 200px;
+}
+
+nav{
+    background-color: #142b3b;
+}
+
+.collapse{
+    justify-content: flex-end;
+    padding-right: 2rem;
+}
+
+#btn-sandwich{
+    background-color: #ffcc99;
+}
+
+#btn-carrito{
+    background-color: #e47c5d;
+    color: #ffcc99;
+    border: #ffcc99;
+}
 body{
-    background-color: rgba(7, 7, 85, 0.719);
+    background-color: #142b3b;
+}
+
+body h1{
+    color: #e47c5d;
+}
+
+#card-main{
+    background-color: #0d1c27;
+    color: #e47c5d;
+    border: 2px solid #ffcc99;
+}
+
+.modal-content{
+    background-color: #0d1c27;
+    color: #ffcc99;
+}
+
+#card-modal{
+    background-color: #0d1c27;
+    color: #ffcc99;
+    border: 2px solid #ffcc99;
+}
+
+
+#precio{
+    border: 3px solid #ffcc99;
+    text-decoration: none;
+    color: #0d1c27;
+    background-color: #ffcc99;
+    font-size: 16px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+footer{
+    background-color: #0d1c27;
 }
