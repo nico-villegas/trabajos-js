@@ -1,3 +1,4 @@
+
 class ProductController {
     constructor() {
         this.listaProductos = []
@@ -46,6 +47,7 @@ class CarritoController {
         if (obtenerListaJSON) {
             this.listaCarrito = JSON.parse(obtenerListaJSON)
         }
+        this.totalProductos()
     }
 
     anadir(producto) {
@@ -99,10 +101,11 @@ class CarritoController {
         this.listaCarrito = []
         localStorage.removeItem("listaCarrito")
         this.mostrarEnDOM(contenedor_carrito)
+        this.totalProductos()
     }
 
     totalProductos(){
-        const totalProductos = document.getElementById('total-productos')
+        const totalProductos = document.getElementById('total_productos')
         let total = 0
         this.listaCarrito.forEach((producto) => {
             total += producto.precio * producto.cantidad
@@ -152,12 +155,5 @@ const eliminarDelCarrito = (id) => {
     controladorCarrito.mostrarEnDOM(contenedor_carrito)
     let arrFormatoJSON = JSON.stringify(controladorCarrito.listaCarrito)
     localStorage.setItem("listaCarrito", arrFormatoJSON)
+    controladorCarrito.totalProductos()
 };
-
-
-
-
-
-
-
-
