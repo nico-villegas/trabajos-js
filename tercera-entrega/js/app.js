@@ -3,12 +3,11 @@ class ProductController {
         this.listaProductos = []
     }
 
-    levantar() {
-        let listaProductoJSON = localStorage.getItem("listaProductos")
-
-        if (listaProductoJSON) {
-            this.listaProductos = JSON.parse(listaProductoJSON)
-        }
+    async levantar() {
+        let res = await fetch("../json/lista_productos.json")
+        this.listaProductos = await res.json()
+        this.mostrarEnDOM(contenedor_productos)
+        this.eventoAñadirAlCarrito()
     }
 
     mostrarEnDOM(contenedor_productos) {
@@ -31,6 +30,29 @@ class ProductController {
                 </div>
             </div>
             `
+        })
+    }
+
+    eventoAñadirAlCarrito() {
+        this.listaProductos.forEach(e => {
+            const agregarAlCarrito = document.getElementById(`mate_Nro_${e.id}`)
+
+            agregarAlCarrito.addEventListener("click", () => {
+
+                controladorCarrito.anadir(e)
+                controladorCarrito.levantar()
+                controladorCarrito.mostrarEnDOM(contenedor_carrito)
+                Toastify({
+                    text: "Producto añadido al carrito correctamente",
+                    duration: 1500,
+                    gravity: "bottom",
+                    position: "right",
+                    style: {
+                        background: "#e47c5d",
+                        color: "#ffcc99"
+                    },
+                }).showToast();
+            })
         })
     }
 }
@@ -124,26 +146,39 @@ const contenedor_productos = document.getElementById("contenedor_productos")
 const contenedor_carrito = document.getElementById("contenedor_carrito")
 
 //APP JS
-controladorProductos.mostrarEnDOM(contenedor_productos)
 controladorCarrito.mostrarEnDOM(contenedor_carrito)
 
-//Añadimos Eventos a los botones de cada CARD
-controladorProductos.listaProductos.forEach(e => {
-    const agregarAlCarrito = document.getElementById(`mate_Nro_${e.id}`)
-
-    agregarAlCarrito.addEventListener("click", () => {
-
-        controladorCarrito.anadir(e)
-        controladorCarrito.levantar()
-        controladorCarrito.mostrarEnDOM(contenedor_carrito)
-    })
-})
 
 
 // Funcionalidades del carrito
 const finalizarCompra = document.getElementById("finalizar_compra")
 finalizarCompra.addEventListener("click", () => {
-    controladorCarrito.limpiarCarrito()
+    if (controladorCarrito.listaCarrito.length > 0) {
+        controladorCarrito.limpiarCarrito()
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            iconColor: '#e47c5d',
+            title: '¡Compra realizada!',
+            color: '#ffcc99',
+            background: '#142b3b',
+            showConfirmButton: false,
+            timer: 2000
+        })
+    } else {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            iconColor: '#e47c5d',
+            title: '¡Oops, el carrito está vacio!',
+            color: '#ffcc99',
+            background: '#142b3b',
+            showConfirmButton: false,
+            timer: 2500
+        })
+    }
+
+
 })
 
 const eliminarDelCarrito = (id) => {
