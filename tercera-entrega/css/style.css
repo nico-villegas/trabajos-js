@@ -14,7 +14,7 @@ nav{
     padding-right: 2rem;
 }
 
-#btn-sandwich{
+.navbar-toggler{
     background-color: #ffcc99;
 }
 
@@ -23,6 +23,12 @@ nav{
     color: #ffcc99;
     border: #ffcc99;
 }
+
+#btn-close{
+    background-color: #ffcc99;
+}
+
+
 body{
     background-color: #142b3b;
 }

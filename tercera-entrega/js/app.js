@@ -1,4 +1,3 @@
-
 class ProductController {
     constructor() {
         this.listaProductos = []
@@ -66,8 +65,6 @@ class CarritoController {
         this.mostrarEnDOM(contenedor_carrito)
 
         this.totalProductos()
-
-        
     }
 
     mostrarEnDOM(contenedor_carrito) {
@@ -104,7 +101,7 @@ class CarritoController {
         this.totalProductos()
     }
 
-    totalProductos(){
+    totalProductos() {
         const totalProductos = document.getElementById('total_productos')
         let total = 0
         this.listaCarrito.forEach((producto) => {
